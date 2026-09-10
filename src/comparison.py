@@ -13,7 +13,7 @@ def compare_prices(
     option_type,
     n_simulations=100_000,
     seed=None,
-):
+    ):
     call, put = black_scholes(s, k, r, t, sigma)
 
     if option_type == "call":
@@ -46,3 +46,35 @@ def compare_prices(
         "confidence_interval": confidence_interval,
         "difference": mc_price - bs_price,
     }
+    
+def monte_carlo_convergence(
+    s,
+    k,
+    r,
+    t,
+    sigma,
+    option_type,
+    simulation_counts,
+    seed=None,
+    ):
+    results = []
+
+    for n_simulations in simulation_counts:
+        mc_price, standard_error = monte_carlo_price(
+            s,
+            k,
+            r,
+            t,
+            sigma,
+            option_type,
+            n_simulations,
+            seed,
+        )
+
+        results.append({
+            "n_simulations": n_simulations,
+            "monte_carlo_price": mc_price,
+            "standard_error": standard_error,
+        })
+
+    return results

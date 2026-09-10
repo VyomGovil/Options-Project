@@ -1,6 +1,9 @@
 import pytest
 
-from src.comparison import compare_prices
+from src.comparison import (
+    compare_prices,
+    monte_carlo_convergence,
+)
 
 
 S = 100
@@ -76,3 +79,38 @@ def test_invalid_option_type():
             n_simulations=10_000,
             seed=42,
         )
+        
+def test_monte_carlo_convergence():
+    simulation_counts = [1_000, 5_000, 10_000]
+
+    results = monte_carlo_convergence(
+        S, K, R, T, SIGMA,
+        "call",
+        simulation_counts,
+        seed=42,
+    )
+
+    assert len(results) == 3
+
+    for result in results:
+        assert result["n_simulations"] > 0
+        assert result["monte_carlo_price"] > 0
+        assert result["standard_error"] > 0
+
+
+def test_standard_error_decreases_with_simulations():
+    simulation_counts = [1_000, 10_000, 100_000]
+
+    results = monte_carlo_convergence(
+        S, K, R, T, SIGMA,
+        "call",
+        simulation_counts,
+        seed=42,
+    )
+
+    errors = [
+        result["standard_error"]
+        for result in results
+    ]
+
+    assert errors[0] > errors[1] > errors[2]
