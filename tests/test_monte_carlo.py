@@ -14,35 +14,37 @@ SIGMA = 0.20
 def test_monte_carlo_call():
     call, _ = black_scholes(S, K, R, T, SIGMA)
 
-    mc_price = monte_carlo_price(
+    mc_price, standard_error = monte_carlo_price(
         S, K, R, T, SIGMA, "call",
         n_simulations=100_000,
         seed=42,
     )
 
     assert mc_price == pytest.approx(call, abs=0.10)
+    assert standard_error > 0
 
 
 def test_monte_carlo_put():
     _, put = black_scholes(S, K, R, T, SIGMA)
 
-    mc_price = monte_carlo_price(
+    mc_price, standard_error = monte_carlo_price(
         S, K, R, T, SIGMA, "put",
         n_simulations=100_000,
         seed=42,
     )
 
     assert mc_price == pytest.approx(put, abs=0.10)
+    assert standard_error > 0
 
 
 def test_monte_carlo_call_and_put_positive():
-    call = monte_carlo_price(
+    call, _ = monte_carlo_price(
         S, K, R, T, SIGMA, "call",
         n_simulations=10_000,
         seed=42,
     )
 
-    put = monte_carlo_price(
+    put, _ = monte_carlo_price(
         S, K, R, T, SIGMA, "put",
         n_simulations=10_000,
         seed=42,
@@ -54,4 +56,8 @@ def test_monte_carlo_call_and_put_positive():
 
 def test_invalid_option_type():
     with pytest.raises(ValueError):
-        monte_carlo_price(S, K, R, T, SIGMA, "invalid", n_simulations=10_000, seed=42)
+        monte_carlo_price(
+            S, K, R, T, SIGMA, "invalid",
+            n_simulations=10_000,
+            seed=42,
+        )

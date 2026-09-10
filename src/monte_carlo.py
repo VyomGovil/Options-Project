@@ -1,7 +1,16 @@
 import numpy as np
 
 
-def monte_carlo_price(s, k, r, t, sigma, option_type, n_simulations=100_000, seed=42):
+def monte_carlo_price(
+    s,
+    k,
+    r,
+    t,
+    sigma,
+    option_type,
+    n_simulations=100_000,
+    seed=None,
+):
     if option_type not in ("call", "put"):
         raise ValueError("option_type must be 'call' or 'put'")
 
@@ -19,6 +28,13 @@ def monte_carlo_price(s, k, r, t, sigma, option_type, n_simulations=100_000, see
     else:
         payoff = np.maximum(k - st, 0)
 
-    price = np.exp(-r * t) * np.mean(payoff)
+    discounted_payoff = np.exp(-r * t) * payoff
 
-    return price
+    price = np.mean(discounted_payoff)
+
+    standard_error = (
+        np.std(discounted_payoff, ddof=1)
+        / np.sqrt(n_simulations)
+    )
+
+    return price, standard_error
