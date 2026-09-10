@@ -10,9 +10,9 @@ A Python quantitative finance project implementing European option pricing, Gree
 * Monte Carlo pricing under risk-neutral GBM
 * Monte Carlo standard errors and confidence intervals
 * Black-Scholes vs Monte Carlo comparison and convergence analysis
-* Stock-price, volatility, and Greek scenario analysis
-* Synthetic implied-volatility skew visualization
-* **59 automated pytest tests** covering numerical correctness and financial model properties
+* Stock-price, strike, volatility, and time-to-maturity scenario analysis
+* Synthetic implied-volatility skew analysis
+* **61 automated pytest tests** covering numerical correctness and financial model properties
 
 ## Project Structure
 
@@ -56,7 +56,7 @@ The test suite validates:
 * Visualization generation
 
 ```text
-59 passed
+61 passed
 ```
 
 ## Visualizations
@@ -68,6 +68,14 @@ The test suite validates:
 ### Option Price vs Volatility
 
 ![Option Price vs Volatility](plots/price_vs_volatility.png)
+
+### Option Price vs Time to Maturity
+
+![Option Price vs Time to Maturity](plots/price_vs_time_to_maturity.png)
+
+### Option Price vs Strike
+
+![Option Price vs Strike](plots/price_vs_strike.png)
 
 ### Greeks vs Stock Price
 

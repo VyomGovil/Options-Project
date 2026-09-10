@@ -4,6 +4,8 @@ from src.scenario_analysis import (
     price_scenarios,
     volatility_scenarios,
     greek_scenarios,
+    time_to_maturity_scenarios,
+    strike_scenarios
 )
 from src.comparison import monte_carlo_convergence
 from src.black_scholes import black_scholes
@@ -344,3 +346,54 @@ def plot_implied_volatility_skew(
         plt.savefig(filename, dpi=300, bbox_inches="tight")
 
     plt.close()
+    
+def plot_price_vs_time_to_maturity(
+    t_values,
+    s,
+    k,
+    r,
+    sigma,
+    option_type,
+    filename=None
+):
+    prices = time_to_maturity_scenarios(
+        t_values, s, k, r, sigma, option_type
+    )
+
+    fig = plt.figure()
+    plt.plot(t_values, prices, marker="o")
+    plt.xlabel("Time to Maturity (Years)")
+    plt.ylabel("Option Price")
+    plt.title(f"{option_type.capitalize()} Price vs Time to Maturity")
+    plt.grid(True)
+
+    if filename:
+        plt.savefig(filename, dpi=300, bbox_inches="tight")
+
+    plt.close(fig)
+
+
+def plot_price_vs_strike(
+    k_values,
+    s,
+    r,
+    t,
+    sigma,
+    option_type,
+    filename=None
+):
+    prices = strike_scenarios(
+        k_values, s, r, t, sigma, option_type
+    )
+
+    fig = plt.figure()
+    plt.plot(k_values, prices, marker="o")
+    plt.xlabel("Strike Price")
+    plt.ylabel("Option Price")
+    plt.title(f"{option_type.capitalize()} Price vs Strike")
+    plt.grid(True)
+
+    if filename:
+        plt.savefig(filename, dpi=300, bbox_inches="tight")
+
+    plt.close(fig)

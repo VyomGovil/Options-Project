@@ -11,12 +11,13 @@ sys.path.insert(
 )
 
 from src.visualization import (
-    plot_price_vs_stock,
-    plot_price_vs_volatility,
     plot_call_put_vs_stock,
+    plot_price_vs_volatility,
     plot_greeks_vs_stock,
     plot_monte_carlo_convergence,
     plot_implied_volatility_skew,
+    plot_price_vs_time_to_maturity,
+    plot_price_vs_strike
 )
 
 
@@ -36,19 +37,29 @@ os.makedirs(PLOTS_DIR, exist_ok=True)
 
 
 s_values = np.linspace(60, 140, 100)
+sigma_values = np.linspace(0.05, 0.60, 100)
+t_values = np.linspace(0.05, 2.0, 20)
+k_values = np.linspace(70, 130, 20)
 
-plot_price_vs_stock(
-    s_values,
-    K,
-    R,
-    T,
-    SIGMA,
-    "call",
-    os.path.join(PLOTS_DIR, "price_vs_stock.png"),
+plot_price_vs_time_to_maturity(
+    t_values,
+    s=100,
+    k=100,
+    r=0.05,
+    sigma=0.20,
+    option_type="call",
+    filename="plots/price_vs_time_to_maturity.png"
 )
 
-
-sigma_values = np.linspace(0.05, 0.60, 100)
+plot_price_vs_strike(
+    k_values,
+    s=100,
+    r=0.05,
+    t=1,
+    sigma=0.20,
+    option_type="call",
+    filename="plots/price_vs_strike.png"
+)
 
 plot_price_vs_volatility(
     sigma_values,

@@ -87,3 +87,34 @@ def greek_scenarios(
         results[key] = np.array(results[key])
 
     return results
+
+def time_to_maturity_scenarios(t_values, s, k, r, sigma, option_type):
+    prices = []
+
+    for t in t_values:
+        call, put = black_scholes(s, k, r, t, sigma)
+
+        if option_type == "call":
+            prices.append(call)
+        elif option_type == "put":
+            prices.append(put)
+        else:
+            raise ValueError("option_type must be 'call' or 'put'")
+
+    return np.array(prices)
+
+
+def strike_scenarios(k_values, s, r, t, sigma, option_type):
+    prices = []
+
+    for k in k_values:
+        call, put = black_scholes(s, k, r, t, sigma)
+
+        if option_type == "call":
+            prices.append(call)
+        elif option_type == "put":
+            prices.append(put)
+        else:
+            raise ValueError("option_type must be 'call' or 'put'")
+
+    return np.array(prices)

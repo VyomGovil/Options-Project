@@ -5,6 +5,8 @@ from src.scenario_analysis import (
     price_scenarios,
     volatility_scenarios,
     greek_scenarios,
+    time_to_maturity_scenarios,
+    strike_scenarios
 )
 
 
@@ -84,3 +86,24 @@ def test_invalid_option_type():
             SIGMA,
             "invalid",
         )
+        
+def test_time_to_maturity_scenarios():
+    t_values = np.array([0.25, 0.5, 1.0])
+    prices = time_to_maturity_scenarios(
+        t_values, 100, 100, 0.05, 0.20, "call"
+    )
+
+    assert len(prices) == 3
+    assert np.all(prices > 0)
+    assert prices[0] < prices[-1]
+
+
+def test_strike_scenarios():
+    k_values = np.array([80, 100, 120])
+    prices = strike_scenarios(
+        k_values, 100, 0.05, 1.0, 0.20, "call"
+    )
+
+    assert len(prices) == 3
+    assert np.all(prices > 0)
+    assert prices[0] > prices[-1]
